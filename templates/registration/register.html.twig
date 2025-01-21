@@ -2,44 +2,166 @@
 
 {% block title %}Inscription{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        :root {
+            --primary-purple: #8B5CF6;
+            --primary-blue: #3B82F6;
+            --hover-purple: #7C3AED;
+            --hover-blue: #2563EB;
+        }
+
+        .auth-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.05));
+        }
+        
+        .auth-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h1 {
+            color: var(--primary-purple);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.1);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-purple);
+            border-color: var(--primary-purple);
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, var(--hover-purple), var(--hover-blue));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-link {
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .btn-link:hover {
+            color: var(--hover-blue);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="h3 mb-3 font-weight-normal">Inscription</h1>
+    <div class="auth-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="auth-card card">
+                        <div class="card-body p-4">
+                            <div class="auth-header">
+                                <h1>Créer un compte</h1>
+                                <p>Rejoignez notre plateforme d'apprentissage</p>
+                            </div>
 
-                    {{ form_start(registrationForm) }}
-                        <div class="mb-3">
-                            {{ form_row(registrationForm.email, {
-                                'label': 'Email',
-                                'attr': {'class': 'form-control'}
-                            }) }}
+                            {{ form_start(registrationForm) }}
+                                <div class="mb-3">
+                                    {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+
+                                <div class="mb-3">
+                                    {{ form_label(registrationForm.name, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(registrationForm.name, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+
+                                <div class="mb-3">
+                                    {{ form_label(registrationForm.password.first, 'Mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(registrationForm.password.first, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+
+                                <div class="mb-4">
+                                    {{ form_label(registrationForm.password.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(registrationForm.password.second, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+
+                                <div class="mb-4">
+                                    {{ form_widget(registrationForm.agreeTerms) }}
+                                    {{ form_label(registrationForm.agreeTerms) }}
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100 mb-3">
+                                    S'inscrire
+                                </button>
+
+                                <div class="auth-footer">
+                                    <p class="mb-2">Déjà inscrit ?</p>
+                                    <a href="{{ path('app_login') }}" class="btn btn-link">Se connecter</a>
+                                </div>
+                            {{ form_end(registrationForm) }}
                         </div>
-
-                        <div class="mb-3">
-                            {{ form_row(registrationForm.name, {
-                                'label': 'Nom',
-                                'attr': {'class': 'form-control'}
-                            }) }}
-                        </div>
-
-                        <div class="mb-3">
-                            {{ form_row(registrationForm.password.first, {
-                                'attr': {'class': 'form-control'}
-                            }) }}
-                        </div>
-
-                        <div class="mb-3">
-                            {{ form_row(registrationForm.password.second, {
-                                'attr': {'class': 'form-control'}
-                            }) }}
-                        </div>
-
-                        <button type="submit" class="btn btn-lg btn-primary w-100">
-                            S'inscrire
-                        </button>
-                    {{ form_end(registrationForm) }}
+                    </div>
                 </div>
             </div>
         </div>

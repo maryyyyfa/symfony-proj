@@ -9,6 +9,10 @@
         {% block stylesheets %}
             <style>
                 :root {
+                    --primary-purple: #8B5CF6;
+                    --primary-blue: #3B82F6;
+                    --hover-purple: #7C3AED;
+                    --hover-blue: #2563EB;
                     --primary-color: #0d6efd;
                     --secondary-color: #6c757d;
                     --success-color: #198754;
@@ -21,7 +25,53 @@
                 }
 
                 .navbar {
-                    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+                    background: linear-gradient(90deg, var(--primary-purple), var(--primary-blue)) !important;
+                    box-shadow: 0 2px 10px rgba(139, 92, 246, 0.2);
+                }
+
+                .navbar-brand {
+                    font-weight: 600;
+                    letter-spacing: 0.5px;
+                }
+
+                .nav-link {
+                    position: relative;
+                    transition: all 0.3s ease;
+                }
+
+                .nav-link:after {
+                    content: '';
+                    position: absolute;
+                    width: 0;
+                    height: 2px;
+                    bottom: 0;
+                    left: 50%;
+                    background: white;
+                    transition: all 0.3s ease;
+                    transform: translateX(-50%);
+                }
+
+                .nav-link:hover:after {
+                    width: 80%;
+                }
+
+                .dropdown-menu {
+                    border: none;
+                    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+                    border-radius: 10px;
+                }
+
+                .dropdown-item {
+                    transition: all 0.3s ease;
+                }
+
+                .dropdown-item:hover {
+                    background: linear-gradient(90deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+                    color: var(--primary-purple);
+                }
+
+                .dropdown-item i {
+                    color: var(--primary-purple);
                 }
 
                 .card {

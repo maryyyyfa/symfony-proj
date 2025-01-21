@@ -2,6 +2,96 @@
 
 {% block title %}Cours disponibles{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .course-list {
+            padding: 2rem 0;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            border: none;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+        }
+
+        .course-image {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, var(--primary-purple), var(--primary-blue)) 1;
+        }
+
+        .course-title {
+            color: var(--primary-purple);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-description {
+            color: #718096;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-category {
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+        }
+
+        .btn-view-course {
+            background: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view-course:hover {
+            background: linear-gradient(90deg, var(--hover-purple), var(--hover-blue));
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .page-header {
+            background: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .no-courses {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+        }
+
+        .no-courses i {
+            font-size: 3rem;
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <h1 class="mb-4">Cours disponibles</h1>
 
