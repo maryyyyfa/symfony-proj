@@ -1,0 +1,252 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ course.id ? 'Modifier' : 'Nouveau' }} cours{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,.1);
+            padding: 2rem;
+        }
+
+        .form-header {
+            background: linear-gradient(45deg, var(--primary-color), #0d8bfd);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        }
+
+        .file-upload {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background: #e9ecef;
+        }
+
+        .file-upload i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .note-editor {
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .note-toolbar {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .current-files {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .current-files p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="form-header">
+        <div class="container">
+            <h1>{{ course.id ? 'Modifier' : 'Créer' }} un cours</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="form-container">
+                    {{ form_start(form) }}
+                        <div class="form-group">
+                            {{ form_label(form.title, 'Titre du cours', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+                            {{ form_errors(form.description) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.category, 'Catégorie', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.category) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.content, 'Contenu du cours', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.content, {'attr': {'class': 'form-control summernote'}}) }}
+                            {{ form_errors(form.content) }}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.pdfFile, 'Document PDF', {'label_attr': {'class': 'form-label'}}) }}
+                                    <div class="file-upload" onclick="document.getElementById('{{ form.pdfFile.vars.id }}').click();">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <p>Cliquez ou glissez un fichier PDF ici</p>
+                                        {{ form_widget(form.pdfFile, {'attr': {'class': 'form-control d-none', 'onchange': 'updateFileName(this, "pdf")'}}) }}
+                                    </div>
+                                    <div id="pdfFileName" class="current-files">
+                                        {% if course.pdfFile %}
+                                            <p>
+                                                <i class="fas fa-file-pdf"></i>
+                                                Fichier actuel : {{ course.pdfFile }}
+                                            </p>
+                                        {% else %}
+                                            <p>Aucun fichier sélectionné</p>
+                                        {% endif %}
+                                    </div>
+                                    {{ form_errors(form.pdfFile) }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.image, 'Image du cours', {'label_attr': {'class': 'form-label'}}) }}
+                                    <div class="file-upload" onclick="document.getElementById('{{ form.image.vars.id }}').click();">
+                                        <i class="fas fa-image"></i>
+                                        <p>Cliquez ou glissez une image ici</p>
+                                        {{ form_widget(form.image, {'attr': {'class': 'form-control d-none', 'onchange': 'previewImage(this)'}}) }}
+                                    </div>
+                                    <div id="imagePreview" class="text-center">
+                                        {% if course.image %}
+                                            <img src="{{ asset('uploads/courses/' ~ course.image) }}" class="preview-image" alt="Preview">
+                                        {% endif %}
+                                    </div>
+                                    {{ form_errors(form.image) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <a href="{{ path('admin_dashboard') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Retour
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>{{ course.id ? 'Mettre à jour' : 'Créer' }} le cours
+                            </button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.summernote').summernote({
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            const file = input.files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function() {
+                preview.innerHTML = `<img src="${reader.result}" class="preview-image" alt="Preview">`;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = '';
+            }
+        }
+
+        function updateFileName(input, type) {
+            const fileNameDiv = document.getElementById(type + 'FileName');
+            const file = input.files[0];
+            
+            if (file) {
+                fileNameDiv.innerHTML = `
+                    <p>
+                        <i class="fas fa-file-${type}"></i>
+                        Fichier sélectionné : ${file.name}
+                    </p>
+                `;
+            }
+        }
+    </script>
+{% endblock %} 

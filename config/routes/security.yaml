@@ -1,0 +1,5 @@
+# Leave this file empty if you're not using logout functionality
+
+logout:
+  path: /logout
+  methods: GET

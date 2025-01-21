@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block body %}
+    <div class="course-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1>{{ course.title }}</h1>
+                    <span class="category-badge mt-2">{{ course.category }}</span>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    {% if course.userInterests|length > 0 %}
+                        <div class="text-white-50">
+                            <i class="fas fa-users me-2"></i>{{ course.userInterests|length }} personnes intéressées
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">À propos de ce cours</h5>
+                        <p class="card-text">{{ course.description }}</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Contenu du cours</h5>
+                        <div class="course-content">
+                            {{ course.content|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card progress-card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Votre progression</h5>
+                        {% if progress %}
+                            {% if progress.isCompleted %}
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle me-2"></i>Cours terminé !
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info">
+                                    <i class="fas fa-book-reader me-2"></i>En cours d'apprentissage
+                                </div>
+                            {% endif %}
+
+                            <div class="text-muted mb-3">
+                                <i class="far fa-clock me-2"></i>
+                                <small>Dernière activité : {{ progress.lastAccessedAt|date('d/m/Y H:i') }}</small>
+                            </div>
+                        {% endif %}
+
+                        {% if course.quiz %}
+                            <a href="{{ path('app_quiz_start', {'id': course.quiz.id}) }}" 
+                               class="btn btn-primary w-100">
+                                {% if progress and progress.isCompleted %}
+                                    <i class="fas fa-redo me-2"></i>Refaire le quiz
+                                {% else %}
+                                    <i class="fas fa-play me-2"></i>Commencer le quiz
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Actions</h5>
+                        {% if app.user %}
+                            {% if isInterested %}
+                                <form method="post" action="{{ path('app_course_uninterest', {'id': course.id}) }}" class="mb-3">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('uninterest' ~ course.id) }}">
+                                    <button type="submit" class="btn btn-outline-primary w-100">
+                                        <i class="fas fa-star me-2"></i>Je ne suis plus intéressé
+                                    </button>
+                                </form>
+                            {% else %}
+                                <form method="post" action="{{ path('app_course_interest', {'id': course.id}) }}" class="mb-3">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('interest' ~ course.id) }}">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="far fa-star me-2"></i>Je suis intéressé
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if course.pdfFile %}
+                            <a href="{{ asset('uploads/courses/' ~ course.pdfFile) }}" 
+                               class="btn btn-outline-secondary w-100" 
+                               target="_blank">
+                                <i class="fas fa-file-pdf me-2"></i>Télécharger le PDF
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

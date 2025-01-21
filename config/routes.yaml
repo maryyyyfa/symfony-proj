@@ -1,0 +1,13 @@
+controllers:
+  resource:
+    path: ../src/Controller/
+    namespace: App\Controller
+  type: attribute
+
+index:
+  path: /
+  controller: App\Controller\CourseController::index
+
+logout:
+  path: /logout
+  controller: App\Controller\SecurityController::logout

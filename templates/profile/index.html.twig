@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        {% if app.user.profilePicture %}
+                            <img src="{{ asset('uploads/profile/' ~ app.user.profilePicture) }}" 
+                                 alt="Photo de profil" 
+                                 class="rounded-circle" width="150">
+                        {% else %}
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                                 style="width: 150px; height: 150px; font-size: 64px;">
+                                {{ app.user.name|first|upper }}
+                            </div>
+                        {% endif %}
+                        <div class="mt-3">
+                            <h4>{{ app.user.name }}</h4>
+                            <p class="text-muted mb-1">{{ app.user.email }}</p>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <a href="{{ path('app_profile_edit') }}" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fas fa-user-edit me-2"></i>Modifier le profil
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <a href="{{ path('app_profile_change_password') }}" class="btn btn-outline-secondary w-100 mb-2">
+                                <i class="fas fa-key me-2"></i>Changer le mot de passe
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <a href="{{ path('app_profile_delete') }}" class="btn btn-outline-danger w-100">
+                                <i class="fas fa-user-times me-2"></i>Supprimer le compte
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Nom complet</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{ app.user.name }}
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{ app.user.email }}
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Membre depuis</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{ app.user.createdAt|date('d/m/Y') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Mes cours</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                {{ app.user.courseProgresses|length }} cours suivis
+                            </h6>
+                            <!-- Liste des cours -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Cours qui m'intéressent</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                {{ app.user.interests|length }} cours
+                            </h6>
+                            <div class="list-group list-group-flush">
+                                {% for interest in app.user.interests %}
+                                    <div class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <a href="{{ path('app_course_show', {'id': interest.course.id}) }}" class="text-decoration-none">
+                                                {{ interest.course.title }}
+                                            </a>
+                                            <small class="text-muted">
+                                                Depuis le {{ interest.createdAt|date('d/m/Y') }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="text-center text-muted py-3">
+                                        Aucun cours marqué comme intéressant
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

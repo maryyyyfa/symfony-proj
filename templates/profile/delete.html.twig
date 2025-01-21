@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer mon compte{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-danger">
+                <div class="card-body text-center">
+                    <h2 class="card-title text-danger mb-4">Supprimer mon compte</h2>
+                    
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Attention ! Cette action est irréversible. Toutes vos données seront définitivement supprimées.
+                    </div>
+
+                    <form method="post" action="{{ path('app_profile_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete-account') }}">
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <a href="{{ path('app_profile') }}" class="btn btn-secondary me-md-2">Annuler</a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-user-times me-2"></i>Supprimer mon compte
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
