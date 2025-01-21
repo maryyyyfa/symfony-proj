@@ -6,23 +6,23 @@
     {{ parent() }}
     <style>
         :root {
-            --primary-purple: #8B5CF6;
-            --primary-blue: #3B82F6;
-            --hover-purple: #7C3AED;
-            --hover-blue: #2563EB;
+            --primary-indigo: #4338ca;  /* Indigo-600 */
+            --primary-slate: #1e293b;   /* Slate-800 */
+            --hover-indigo: #3730a3;    /* Indigo-700 */
+            --hover-slate: #0f172a;     /* Slate-900 */
         }
 
         .auth-container {
             min-height: 80vh;
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.05));
+            background: linear-gradient(135deg, rgba(67, 56, 202, 0.05), rgba(30, 41, 59, 0.05));
         }
         
         .auth-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.1);
+            box-shadow: 0 8px 20px rgba(67, 56, 202, 0.15);
             overflow: hidden;
             position: relative;
         }
@@ -34,7 +34,7 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
+            background: linear-gradient(90deg, var(--primary-indigo), var(--primary-slate));
         }
 
         .auth-header {
@@ -43,7 +43,7 @@
         }
 
         .auth-header h1 {
-            color: var(--primary-purple);
+            color: var(--primary-indigo);
             font-size: 1.8rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
@@ -62,17 +62,17 @@
         }
 
         .form-control:focus {
-            border-color: var(--primary-purple);
-            box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.1);
+            border-color: var(--primary-indigo);
+            box-shadow: 0 0 0 0.2rem rgba(67, 56, 202, 0.1);
         }
 
         .form-check-input:checked {
-            background-color: var(--primary-purple);
-            border-color: var(--primary-purple);
+            background-color: var(--primary-indigo);
+            border-color: var(--primary-indigo);
         }
 
         .btn-primary {
-            background: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
+            background: linear-gradient(90deg, var(--primary-indigo), var(--primary-slate));
             border: none;
             border-radius: 8px;
             padding: 12px;
@@ -82,9 +82,9 @@
         }
 
         .btn-primary:hover {
-            background: linear-gradient(90deg, var(--hover-purple), var(--hover-blue));
+            background: linear-gradient(90deg, var(--hover-indigo), var(--hover-slate));
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 4px 12px rgba(67, 56, 202, 0.2);
         }
 
         .auth-footer {
@@ -95,14 +95,14 @@
         }
 
         .btn-link {
-            color: var(--primary-purple);
+            color: var(--primary-indigo);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
         .btn-link:hover {
-            color: var(--hover-blue);
+            color: var(--hover-indigo);
         }
 
         .form-label {
